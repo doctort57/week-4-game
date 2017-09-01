@@ -19,7 +19,7 @@ header {
 }
 .text2 {
   font-family: 'Times New Roman',cursive;;
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bolder;
   color: black;
   
@@ -117,15 +117,16 @@ header {
 }
 
 .enemy {
-  width: 153px;
-  margin: 5px;
+/*  width: 153px;
+  margin: 5px; */
   border-style: solid;
   border-color: white;
   border-width: 1px;
   cursor: pointer;
-  display: inline-block; 
-/*  float: left; */
-}
+  display: inline-block;
+  background-color: black;
+  color: white; 
+} 
 
 .target-enemy {
   background-color: black;

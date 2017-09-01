@@ -46,9 +46,7 @@ let characters = {
 };
 
 var currSelectedCharacter;
-var currDefender;
-var currEnemy;
-var currDef;
+var currAttacker;
 var lastEnemy;
 var combatants = [];
 var indexofSelChar;
@@ -69,13 +67,9 @@ var renderOne = function(character, renderArea, makeChar) {
 
     // conditional render
     if (makeChar == 'enemy') {
-     $(charDiv).addClass('enemy');
-       currEnemy = character; 
-    } else if (makeChar == 'defender') {
-      currDefender = character;
-      $(charDiv).addClass('target-enemy'); 
-      $(charDiv).addClass('text'); 
-    } 
+     $(charDiv).addClass('enemy'); 
+       currAttacker = character; 
+     } 
   };
 
   // Create function to render game message to DOM
@@ -94,17 +88,16 @@ var renderOne = function(character, renderArea, makeChar) {
       $(areaRender).empty();
       for (var key in charObj) {
         if (charObj.hasOwnProperty(key)) {
-          renderOne(charObj[key], areaRender, 'defender');
+          renderOne(charObj[key], areaRender, '');
         }
       }
     }
     //render player character
     if (areaRender == '#selected-character') {
       if ($('#selected-character').children().length === 0) {
-        currDef = charObj;
-        health = currDef.health;
+          health = charObj.health;
       }
-      renderOne(charObj, areaRender, 'defender2');
+      renderOne(charObj, areaRender, '');
       $('#selected-character').prepend("Your Character");
       $('#selected-character').addClass('text2');
       $('#attack-button').addClass('btn'); 
@@ -113,12 +106,10 @@ var renderOne = function(character, renderArea, makeChar) {
     //render combatants
     if (areaRender == '#available-to-attack-section') {
         $('#available-to-attack-section').addClass('enemytext'); 
-       $('#fight-section').prepend("Fight Section"); 
+        $('#fight-section').prepend("Fight Section"); 
         $('#fight-section').addClass('fighttext'); 
         $('#available-to-attack-section').prepend("Choose Your Opponent"); 
-
       for (var i = 0; i < charObj.length; i++) {
-
         renderOne(charObj[i], areaRender, 'enemy');
       }
       //render one enemy to defender area
@@ -137,41 +128,35 @@ var renderOne = function(character, renderArea, makeChar) {
 
     //render defender
     if (areaRender == '#defender') {
-
       $(areaRender).empty();
-      for (var i = 0; i < combatants.length; i++) {
-        //add enemy to defender area
-          if (combatants[i].name == charObj) {
-            $('#selected-character').append("Your Opponent");
-            renderOne(combatants[i], "#selected-character", 'defender');
-
-            lastEnemy = combatants[i];
-          }
-      }
+        for (var i = 0; i < combatants.length; i++) {
+          //add enemy to defender area
+            if (combatants[i].name == charObj) {
+              $('#selected-character').append("Your Opponent");
+              renderOne(combatants[i], "#selected-character", 'enemy');
+              lastEnemy = combatants[i];
+            }
+        }
     }
-
-
 
     //re-render defender when attacked
     if (areaRender == 'playerDamage') {
-      $('#selected-character').empty();
-      $('#selected-character').prepend("Your Character");
-
-      renderOne(charObj,'#selected-character', 'defender');
-      lightsaber.play();
+        $('#selected-character').empty();
+        $('#selected-character').prepend("Your Character");
+        renderOne(currSelectedCharacter,'#selected-character', '');
+        lightsaber.play();
     }
     //re-render player character when attacked
     if (areaRender == 'enemyDamage') {
         $('#selected-character').append("Your Opponent");
-        charObj.health = currSelectedCharacter.health;
-        renderOne(charObj, '#selected-character', 'defender'); 
+        renderOne(currAttacker, '#selected-character', 'enemy');  
     }
     //render defeated enemy
     if (areaRender == 'enemyDefeated') {
       $('#selected-character').empty();
-      charObj.health = health;
+      currSelectedCharacter.health = health;
       $('#selected-character').prepend("Your Character");
-      renderOne(charObj, '#selected-character', 'defender'); 
+      renderOne(currSelectedCharacter, '#selected-character', ''); 
       var gameStateMessage = "You have defeated " + lastEnemy.capName + ", you can choose to fight another enemy.";
       renderMessage(gameStateMessage);
       blaster.play();
@@ -179,67 +164,67 @@ var renderOne = function(character, renderArea, makeChar) {
   };
 
   //this is to render all characters for user to choose their computer
-  renderCharacters(characters, '#characters-section');
-  $(document).on('click', '.character', function() {
-    name = $(this).data('name');
-    //if no player char has been selected
-    if (!currSelectedCharacter) {
-      currSelectedCharacter = characters[name];
-      for (var key in characters) {
-        if (key != name) {
-          combatants.push(characters[key]);
+    renderCharacters(characters, '#characters-section');
+    $(document).on('click', '.character', function() {
+      name = $(this).data('name');
+      //if no player char has been selected
+      if (!currSelectedCharacter) {
+        currSelectedCharacter = characters[name];
+        for (var key in characters) {
+          if (key != name) {
+            combatants.push(characters[key]);
+          }
         }
+        $("#characters-section").hide();
+        renderCharacters(currSelectedCharacter, '#selected-character');
+
+        //this is to render all characters for user to choose fight against
+        renderCharacters(combatants, '#available-to-attack-section');
       }
-      $("#characters-section").hide();
-      renderCharacters(currSelectedCharacter, '#selected-character');
-         
-      //this is to render all characters for user to choose fight against
-      renderCharacters(combatants, '#available-to-attack-section');
-    }
   });
+
+
+
+
 
   // ----------------------------------------------------------------
   // Create functions to enable actions between objects.
     $("#attack-button").on("click", function() {
-  
     //if defernder area has enemy
-    currEnemy = currDefender;
     if ($('#selected-character').children().length !== 1) {
       //defender state change
-      var attackMessage = "You attacked " + currDefender.capName + " for " + (currSelectedCharacter.attack * turnCounter) + " damage.";
-      renderMessage("clearMessage");
+        renderMessage("clearMessage");
       //combat
-      currDefender.health = currDefender.health - (currSelectedCharacter.attack * turnCounter);
-
+        currAttacker.health =currAttacker.health - (currSelectedCharacter.attack * turnCounter);
       //win condition
-      if (currDefender.health > 0) {
-        //enemy not dead keep playing
-        renderCharacters(currSelectedCharacter, 'playerDamage');
+      if (currAttacker.health > 0) {
+      //enemy not dead keep playing
+          var attackMessage = "You attacked " + currAttacker.capName + " for " + (currSelectedCharacter.attack * turnCounter) + " damage.";
+          currSelectedCharacter.health = currSelectedCharacter.health - currAttacker.enemyAttackBack;
+          var counterAttackMessage = currAttacker.capName + " attacked you back for " + currAttacker.enemyAttackBack + " damage.";
+          renderCharacters(currSelectedCharacter, 'playerDamage');
+
         //player state change
-        var counterAttackMessage = currEnemy.capName + " attacked you back for " + currDefender.enemyAttackBack + " damage.";
-        renderMessage(attackMessage);
-        renderMessage(counterAttackMessage);
-        currSelectedCharacter.health = currSelectedCharacter.health - currDefender.enemyAttackBack;
-
-        renderCharacters(currEnemy, 'enemyDamage'); 
-        if (currSelectedCharacter.health <= 0) {
-          renderMessage("clearMessage");
-          restartGame("You have been defeated...GAME OVER!!!");
-          force.play();
-          $("#attack-button").unbind("click");
-        }
+          renderMessage(attackMessage);
+          renderMessage(counterAttackMessage);
+          renderCharacters(currAttacker, 'enemyDamage'); 
+          if (currSelectedCharacter.health <= 0) {
+              renderMessage("clearMessage");
+              restartGame("You have been defeated...GAME OVER!!!");
+              force.play();
+              $("#attack-button").unbind("click");
+          }
       } else {
-        renderCharacters(currDef, 'enemyDefeated');
-        killCount++;
-        if (killCount >= 3) {
-          renderMessage("clearMessage");
-          restartGame("You Won!!!! GAME OVER!!!");
-          jediKnow.play();
-          // The following line will play the imperial march:
-          setTimeout(function() {
-          audio.play();
-          }, 2000);
-
+          renderCharacters(currSelectedCharacter, 'enemyDefeated');
+          killCount++;
+          if (killCount >= 3) {
+            renderMessage("clearMessage");
+            restartGame("You Won!!!! GAME OVER!!!");
+            jediKnow.play();
+            // The following line will play the imperial march:
+            setTimeout(function() {
+            audio.play();
+            }, 2000);
         }
       }
       turnCounter++;
