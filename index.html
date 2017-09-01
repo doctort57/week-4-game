@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Linking Bootstrap  -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <!-- Linking CSS -->
+	<link rel="stylesheet" type="text/css" href="assets\css\reset.css">
+	<link rel="stylesheet" type="text/css" href="assets\css\style.css">
+</head>
+<html>
+<body>
+  <header>
+    <img src="assets/images/swrpg.png">
+  </header>
+
+  <div class="container" id="main-game-section">
+    <div class="container col-lg-12" id="characters-section">
+      <div class="container section-title">Select Your Character</div>
+    </div>
+    <div class="container col-lg-4" id="selected-character-section">
+      <div class="section-title container"></div>
+      <div id="selected-character"></div>
+    </div>
+     <div class="section-title container col-lg-4"
+      <div id="fight-section">
+           <div><button class="btn" id="attack-button">Attack</button></div>
+           <div class="jumbotron" id="gameMessage"></div>
+       </div>   
+    </div>  
+    <div id="action">
+      <div class="character-section">
+        <div class="container section-title col-lg-3">
+          <div id="defender"></div>
+        </div>  
+      </div>
+    </div>    
+    <div class="container" id="available-to-attack-section">
+      <div class="section-title"></div>
+    </div>
+
+
+<!--     <div class="jumbotron" id="gameMessage"></div>
+ -->
+  </div>
+  <!-- JQuery -->
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+ 
+ <!-- Javascript Game Logic -->
+ <script type="text/javascript" src="assets/js/game.js"></script>
+</body>
+</html>

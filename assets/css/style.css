@@ -1,0 +1,147 @@
+/*---------------------*/
+/* Body and background */
+/*---------------------*/
+body {
+  background-image: url(../images/background.jpg);
+  font-family: 'Montserrat', sans-serif;
+}
+header {
+  font-size: 50px;
+  text-align: center;
+  padding: 20px;
+}
+.text {
+  margin-top: 20px;
+  font-family: 'Times New Roman',cursive;;
+  font-size: 20px;
+  font-weight: bolder;
+  color: gold;
+}
+.text2 {
+  font-family: 'Times New Roman',cursive;;
+  font-size: 20px;
+  font-weight: bolder;
+  color: black;
+  
+}
+.fighttext {
+  font-family: 'Times New Roman',cursive;;
+  font-size: 22px;
+  font-weight: bolder;
+  text-align: center;
+  color: gold;
+}
+.enemytext {
+  font-family: 'Times New Roman',cursive;;
+  font-size: 22px;
+  font-weight: bolder;
+  color: yellow;
+  text-align: center;
+}
+
+#gameMessage {
+  margin-bottom: 50px;
+  height: 95px;
+  text-align: center;
+  font-size: 20px;
+  color: navy;
+  font-weight: bolder;
+  line-height: 20px;
+  opacity: 0.60;
+}
+
+#choose-enemy-button {
+  visibility: hidden;
+}
+
+#restart-button {
+  visibility: hidden;
+}
+
+#turn-counter {
+  font-size: 150%;
+}
+
+/*---------------------*/
+/* Character rendering */
+/*---------------------*/
+.character {
+  width: 130px;
+  margin: 0px 125px 0px 15px;
+  cursor: pointer;
+  display: inline-block;
+  border: 1px solid white; 
+}
+
+
+.character img {
+  height: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  margin-bottom: 5px;
+  align-items: center;
+} 
+.character-name {
+  padding: 0px 16px;
+  margin: 3px 0px;
+  text-align: center;
+  line-height: 30px;
+  margin-top: 10px;
+  font-family: 'Times New Roman',cursive;;
+  font-size: 18px;
+  font-weight: bolder;
+  color: white;
+}
+.character-health {
+  text-align: center;
+  margin-bottom: 5px;
+  font-weight: bolder;
+  color: white;
+}
+
+/*---------------------*/
+/*      Fighting       */
+/*---------------------*/
+.attack {
+  text-align: center;
+}
+
+#attack-button{
+  visibility: hidden;
+}
+.btn {
+  background: red;
+  color: white; 
+  font-size: 20px;
+}
+
+.enemy {
+  width: 153px;
+  margin: 5px;
+  border-style: solid;
+  border-color: white;
+  border-width: 1px;
+  cursor: pointer;
+  display: inline-block; 
+/*  float: left; */
+}
+
+.target-enemy {
+  background-color: black;
+  color: white;
+}
+
+
+/*---------------------*/
+/*   Media Queries     */
+/*---------------------*/
+@media only screen and (max-device-width: 768px) {
+  .character {
+    display: block;
+  height: 150px;    
+  }
+  #gameMessage {
+  font-size: 18px;
+  }
+}
